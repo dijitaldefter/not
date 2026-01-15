@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilisim Teknolojileri ve Yazilim - Ogrenci Portali</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const topics = {
+            donanim: {
+                id: 'donanim',
+                title: 'Donanim',
+                icon: '💻',
+                color: 'from-blue-500 to-cyan-500',
+                summary: `Donanim, bilgisayar sisteminin fiziksel bilesenlerini ifade eder. Bilgisayarin calismasi icin gerekli tum elektronik ve mekanik parcalar donanim kapsamindadir.
+
+**Temel Donanim Bilesenleri:**
+
+1. **Islemci (CPU)**: Bilgisayarin beyni olarak gorev yapar. Tum hesaplamalari ve islemleri gerceklestirir.
+
+2. **Bellek (RAM)**: Gecici veri depolama alani. Hizli erisim icin kullanilir.
+
+3. **Sabit Disk (HDD/SSD)**: Kalici veri depolama birimi. Isletim sistemi ve dosyalar burada saklanir.
+
+4. **Anakart (Motherboard)**: Tum donanim bilesenlerinin birbirine baglandigi ana kart.
+
+5. **Ekran Karti (GPU)**: Goruntu isleme ve goruntuleme islemlerini yonetir.
+
+6. **Guc Kaynagi (PSU)**: Bilgisayara elektrik enerjisi saglar.
+
+Donanim bilesenleri birbirleriyle uyumlu calisarak bilgisayar sisteminin islevselligini saglar.`,
+                questions: [
+                    {
+                        id: 1,
+                        question: 'Bilgisayarin beyni olarak adlandirilan donanim bileseni hangisidir?',
+                        options: ['RAM', 'CPU (Islemci)', 'Sabit Disk', 'Ekran Karti'],
+                        correct: 1
+                    },
+                    {
+                        id: 2,
+                        question: 'Gecici veri depolama icin kullanilan donanim bileseni hangisidir?',
+                        options: ['SSD', 'HDD', 'RAM', 'CPU'],
+                        correct: 2
+                    },
+                    {
+                        id: 3,
+                        question: 'Tum donanim bilesenlerinin birbirine baglandigi ana kartin adi nedir?',
+                        options: ['Ekran Karti', 'Anakart (Motherboard)', 'Guc Kaynagi', 'Islemci'],
+                        correct: 1
+                    },
+                    {
+                        id: 4,
+                        question: 'Kalici veri depolama icin kullanilan donanim bilesenleri hangileridir?',
+                        options: ['RAM ve CPU', 'HDD ve SSD', 'Anakart ve Ekran Karti', 'Guc Kaynagi ve RAM'],
+                        correct: 1
+                    },
+                    {
+                        id: 5,
+                        question: 'Goruntu isleme ve goruntuleme islemlerini yoneten donanim bileseni hangisidir?',
+                        options: ['CPU', 'RAM', 'GPU (Ekran Karti)', 'Anakart'],
+                        correct: 2
+                    }
+                ]
+            },
+            algoritma: {
+                id: 'algoritma',
+                title: 'Algoritma',
+                icon: '🧮',
+                color: 'from-purple-500 to-pink-500',
+                summary: `Algoritma, bir problemi cozmek veya bir gorevi yerine getirmek icin izlenen adim adim talimatlar dizisidir. Algoritmalar, bilgisayar programlamanin temelini olusturur.
+
+**Algoritmanin Ozellikleri:**
+
+1. **Acik ve Net**: Her adim net bir sekilde tanimlanmalidir.
+
+2. **Sonlu**: Algoritma mutlaka bir sonuca ulasmalidir.
+
+3. **Etkili**: Her adim uygulanabilir olmalidir.
+
+4. **Girdi/Cikti**: Algoritma girdi almali ve cikti uretmelidir.
+
+**Algoritma Ornekleri:**
+
+- Yemek tarifi
+- Matematiksel islemler
+- Siralama algoritmalari
+- Arama algoritmalari
+
+**Algoritma Gosterimi:**
+
+Algoritmalar akis semalari, sozde kod (pseudocode) veya programlama dilleri ile gosterilebilir. Gunluk hayatta da algoritmalar kullaniriz; ornegin cay demleme, yemek yapma gibi islemler birer algoritmadir.`,
+                questions: [
+                    {
+                        id: 1,
+                        question: 'Algoritmanin temel ozelliklerinden hangisi, algoritmanin mutlaka bir sonuca ulasmasi gerektigini ifade eder?',
+                        options: ['Acik ve Net', 'Sonlu', 'Etkili', 'Girdi/Cikti'],
+                        correct: 1
+                    },
+                    {
+                        id: 2,
+                        question: 'Algoritmalar hangi yontemlerle gosterilebilir?',
+                        options: ['Sadece programlama dilleri ile', 'Akis semalari, sozde kod ve programlama dilleri ile', 'Sadece akis semalari ile', 'Sadece sozde kod ile'],
+                        correct: 1
+                    },
+                    {
+                        id: 3,
+                        question: 'Asagidakilerden hangisi bir algoritma ornegidir?',
+                        options: ['Sadece matematiksel islemler', 'Yemek tarifi, matematiksel islemler, siralama algoritmalari', 'Sadece programlama', 'Sadece akis semalari'],
+                        correct: 1
+                    },
+                    {
+                        id: 4,
+                        question: 'Algoritmanin "Etkili" ozelligi ne anlama gelir?',
+                        options: ['Algoritma hizli calismalidir', 'Her adim uygulanabilir olmalidir', 'Algoritma karmasik olmalidir', 'Algoritma uzun olmalidir'],
+                        correct: 1
+                    },
+                    {
+                        id: 5,
+                        question: 'Gunluk hayatta kullandigimiz hangi islem bir algoritma ornegidir?',
+                        options: ['Sadece bilgisayar kullanimi', 'Cay demleme, yemek yapma gibi islemler', 'Sadece okuma', 'Sadece yazma'],
+                        correct: 1
+                    }
+                ]
+            },
+            yazilim: {
+                id: 'yazilim',
+                title: 'Yazilim',
+                icon: '💾',
+                color: 'from-green-500 to-emerald-500',
+                summary: `Yazilim, bilgisayar sistemlerinin calismasini saglayan programlar ve verilerdir. Donanimin aksine fiziksel olmayan, dijital komutlar ve talimatlar butunudur.
+
+**Yazilim Turleri:**
+
+1. **Sistem Yazilimlari**: Bilgisayarin temel islevlerini yonetir.
+   - Isletim Sistemleri (Windows, Linux, macOS)
+   - Suruculer (Driver)
+   - Yardimci Programlar
+
+2. **Uygulama Yazilimlari**: Kullanicilarin belirli gorevleri yerine getirmesi icin tasarlanmis programlar.
+   - Kelime Islemciler (Word, Google Docs)
+   - Hesap Tablolari (Excel, Google Sheets)
+   - Oyunlar
+   - Web Tarayicilari
+
+3. **Programlama Dilleri**: Yazilim gelistirmek icin kullanilan araclardir.
+   - Python, Java, JavaScript, C++ vb.
+
+**Yazilim Gelistirme Sureci:**
+
+1. Analiz ve Tasarim
+2. Kodlama
+3. Test
+4. Bakim ve Guncelleme
+
+Yazilim, modern teknolojinin temel tasidir ve hayatimizin her alaninda kullanilmaktadir.`,
+                questions: [
+                    {
+                        id: 1,
+                        question: 'Bilgisayarin temel islevlerini yoneten yazilim turu hangisidir?',
+                        options: ['Uygulama Yazilimlari', 'Sistem Yazilimlari', 'Programlama Dilleri', 'Oyunlar'],
+                        correct: 1
+                    },
+                    {
+                        id: 2,
+                        question: 'Asagidakilerden hangisi bir uygulama yazilimidir?',
+                        options: ['Windows', 'Linux', 'Excel', 'Driver'],
+                        correct: 2
+                    },
+                    {
+                        id: 3,
+                        question: 'Yazilim gelistirme surecinin asamalari hangileridir?',
+                        options: ['Sadece kodlama', 'Analiz, Tasarim, Kodlama, Test, Bakim', 'Sadece test', 'Sadece bakim'],
+                        correct: 1
+                    },
+                    {
+                        id: 4,
+                        question: 'Asagidakilerden hangisi bir programlama dilidir?',
+                        options: ['Windows', 'Excel', 'Python', 'Google Chrome'],
+                        correct: 2
+                    },
+                    {
+                        id: 5,
+                        question: 'Yazilim nedir?',
+                        options: ['Bilgisayarin fiziksel parcalari', 'Bilgisayar sistemlerinin calismasini saglayan programlar ve veriler', 'Sadece oyunlar', 'Sadece isletim sistemleri'],
+                        correct: 1
+                    }
+                ]
+            },
+            etik: {
+                id: 'etik',
+                title: 'Bilisim Etigi',
+                icon: '⚖️',
+                color: 'from-orange-500 to-red-500',
+                summary: `Bilisim etigi, bilgisayar ve internet teknolojilerinin kullaniminda dogru ve yanlis davranislari inceleyen bir alandir. Dijital dunyada sorumlu ve etik davranislar sergilemek cok onemlidir.
+
+**Bilisim Etiginin Temel Ilkeleri:**
+
+1. **Gizlilik ve Mahremiyet**: Baskalarinin kisisel bilgilerine saygi gostermek.
+
+2. **Telif Haklari**: Baskalarinin eserlerini izinsiz kullanmamak, kaynak gostermek.
+
+3. **Siber Zorbalik**: Internette baskalarini rahatsiz etmemek, saygili davranmak.
+
+4. **Guvenlik**: Sifrelerinizi korumak, guvenli internet kullanimi.
+
+5. **Dogru Bilgi**: Internette dogru bilgi paylasmak, yanlis bilgi yaymamak.
+
+**Etik Olmayan Davranislar:**
+
+- Baskalarinin hesaplarini ele gecirmek
+- Zararli yazilim (virus) yaymak
+- Telif hakki ihlali yapmak
+- Siber zorbalik yapmak
+- Kisisel bilgileri izinsiz paylasmak
+
+**Etik Internet Kullanimi:**
+
+- Guclu sifreler kullanmak
+- Kaynak gostermek
+- Saygili iletisim kurmak
+- Kisisel bilgileri korumak
+- Guvenilir kaynaklardan bilgi almak
+
+Dijital vatandaslik bilinciyle hareket etmek, hem kendimizi hem de baskalarini korur.`,
+                questions: [
+                    {
+                        id: 1,
+                        question: 'Bilisim etiginin temel ilkelerinden hangisi, baskalarinin kisisel bilgilerine saygi gostermeyi ifade eder?',
+                        options: ['Telif Haklari', 'Gizlilik ve Mahremiyet', 'Guvenlik', 'Dogru Bilgi'],
+                        correct: 1
+                    },
+                    {
+                        id: 2,
+                        question: 'Asagidakilerden hangisi etik olmayan bir davranistir?',
+                        options: ['Guclu sifreler kullanmak', 'Baskalarinin hesaplarini ele gecirmek', 'Kaynak gostermek', 'Saygili iletisim kurmak'],
+                        correct: 1
+                    },
+                    {
+                        id: 3,
+                        question: 'Baskalarinin eserlerini kullanirken ne yapmaliyiz?',
+                        options: ['Izinsiz kullanabiliriz', 'Kaynak gostermeliyiz', 'Hicbir sey yapmamiza gerek yok', 'Degistirerek kullanabiliriz'],
+                        correct: 1
+                    },
+                    {
+                        id: 4,
+                        question: 'Etik internet kullanimi icin asagidakilerden hangisi onemlidir?',
+                        options: ['Zayif sifreler kullanmak', 'Guclu sifreler kullanmak, kaynak gostermek, saygili iletisim kurmak', 'Kisisel bilgileri herkese paylasmak', 'Yanlis bilgi yaymak'],
+                        correct: 1
+                    },
+                    {
+                        id: 5,
+                        question: 'Dijital vatandaslik bilinciyle hareket etmek neden onemlidir?',
+                        options: ['Sadece kendimizi korur', 'Hem kendimizi hem de baskalarini korur', 'Sadece baskalarini korur', 'Hicbir faydasi yoktur'],
+                        correct: 1
+                    }
+                ]
+            }
+        };
+
+        function HomePage({ onSelectTopic }) {
+            const topicList = Object.values(topics);
+
+            return (
+                <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="text-center mb-12">
+                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-800 mb-4">
+                                🎓 Bilisim Teknolojileri ve Yazilim
+                            </h1>
+                            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+                                Ogrenci Portali - Konulari kesfedin, ogrenin ve test edin!
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                            {topicList.map((topic) => (
+                                <button
+                                    key={topic.id}
+                                    onClick={() => onSelectTopic(topic)}
+                                    className="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-6 text-left"
+                                >
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${topic.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+                                    
+                                    <div className="relative z-10">
+                                        <div className="text-6xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                                            {topic.icon}
+                                        </div>
+                                        <h2 className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-gray-900">
+                                            {topic.title}
+                                        </h2>
+                                        <p className="text-gray-600 text-sm">
+                                            Konuyu ogren ve test et
+                                        </p>
+                                    </div>
+
+                                    <div className="absolute bottom-4 right-4 text-gray-400 group-hover:text-gray-600 transform group-hover:translate-x-1 transition-all duration-300">
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="text-center mt-12">
+                            <p className="text-gray-500 text-sm">
+                                Her konu icin detayli ozet ve interaktif test sorulari mevcuttur
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function TopicDetail({ topic, onBack }) {
+            const [showQuiz, setShowQuiz] = useState(false);
+
+            if (showQuiz) {
+                return <Quiz topic={topic} onBack={() => setShowQuiz(false)} />;
+            }
+
+            return (
+                <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-4xl mx-auto">
+                        <button
+                            onClick={onBack}
+                            className="mb-6 flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 group"
+                        >
+                            <svg className="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Ana Sayfaya Don
+                        </button>
+
+                        <div className={`bg-gradient-to-br ${topic.color} rounded-2xl p-8 mb-8 text-white shadow-xl`}>
+                            <div className="flex items-center gap-4 mb-4">
+                                <span className="text-6xl">{topic.icon}</span>
+                                <h1 className="text-4xl sm:text-5xl font-bold">{topic.title}</h1>
+                            </div>
+                        </div>
+
+                        <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-6">
+                            <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                <span className="text-3xl">📚</span>
+                                Konu Ozeti
+                            </h2>
+                            <div className="text-gray-700 leading-relaxed whitespace-pre-line">
+                                {topic.summary.split('**').map((part, index) => {
+                                    if (index % 2 === 1) {
+                                        return <strong key={index} className="text-gray-900">{part}</strong>;
+                                    }
+                                    return <span key={index}>{part}</span>;
+                                })}
+                            </div>
+                        </div>
+
+                        <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
+                            <div className="text-center">
+                                <div className="text-5xl mb-4">🧪</div>
+                                <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                                    Bilginizi Test Edin!
+                                </h3>
+                                <p className="text-gray-600 mb-6">
+                                    {topic.questions.length} soruluk test ile ogrendiklerinizi pekistirin.
+                                </p>
+                                <button
+                                    onClick={() => setShowQuiz(true)}
+                                    className={`bg-gradient-to-r ${topic.color} text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg`}
+                                >
+                                    Teste Basla →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function Quiz({ topic, onBack }) {
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [selectedAnswers, setSelectedAnswers] = useState({});
+            const [showResults, setShowResults] = useState(false);
+            const [score, setScore] = useState(0);
+
+            const questions = topic.questions;
+
+            const handleAnswerSelect = (questionId, answerIndex) => {
+                setSelectedAnswers({
+                    ...selectedAnswers,
+                    [questionId]: answerIndex
+                });
+            };
+
+            const handleNext = () => {
+                if (currentQuestion < questions.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                } else {
+                    calculateScore();
+                    setShowResults(true);
+                }
+            };
+
+            const handlePrevious = () => {
+                if (currentQuestion > 0) {
+                    setCurrentQuestion(currentQuestion - 1);
+                }
+            };
+
+            const calculateScore = () => {
+                let correct = 0;
+                questions.forEach((question) => {
+                    if (selectedAnswers[question.id] === question.correct) {
+                        correct++;
+                    }
+                });
+                setScore(correct);
+            };
+
+            const handleRestart = () => {
+                setCurrentQuestion(0);
+                setSelectedAnswers({});
+                setShowResults(false);
+                setScore(0);
+            };
+
+            if (showResults) {
+                const percentage = Math.round((score / questions.length) * 100);
+                let resultMessage = '';
+                let resultColor = '';
+                let resultEmoji = '';
+
+                if (percentage >= 80) {
+                    resultMessage = 'Mukemmel! 🎉';
+                    resultColor = 'from-green-500 to-emerald-500';
+                    resultEmoji = '🌟';
+                } else if (percentage >= 60) {
+                    resultMessage = 'Iyi Is! 👍';
+                    resultColor = 'from-blue-500 to-cyan-500';
+                    resultEmoji = '✨';
+                } else if (percentage >= 40) {
+                    resultMessage = 'Daha Fazla Calismalisin 📚';
+                    resultColor = 'from-yellow-500 to-orange-500';
+                    resultEmoji = '📖';
+                } else {
+                    resultMessage = 'Tekrar Denemelisin 🔄';
+                    resultColor = 'from-red-500 to-pink-500';
+                    resultEmoji = '💪';
+                }
+
+                return (
+                    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+                        <div className="max-w-2xl mx-auto">
+                            <div className={`bg-gradient-to-br ${resultColor} rounded-2xl p-8 sm:p-12 text-white shadow-2xl text-center mb-6`}>
+                                <div className="text-7xl mb-4">{resultEmoji}</div>
+                                <h2 className="text-3xl sm:text-4xl font-bold mb-4">{resultMessage}</h2>
+                                <div className="text-6xl font-bold mb-2">{score}/{questions.length}</div>
+                                <div className="text-2xl opacity-90">%{percentage}</div>
+                            </div>
+
+                            <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-6">
+                                <h3 className="text-2xl font-bold text-gray-800 mb-6">Cevaplariniz:</h3>
+                                <div className="space-y-4">
+                                    {questions.map((question, index) => {
+                                        const userAnswer = selectedAnswers[question.id];
+                                        const isCorrect = userAnswer === question.correct;
+                                        
+                                        return (
+                                            <div
+                                                key={question.id}
+                                                className={`p-4 rounded-lg border-2 ${
+                                                    isCorrect
+                                                        ? 'border-green-500 bg-green-50'
+                                                        : 'border-red-500 bg-red-50'
+                                                }`}
+                                            >
+                                                <div className="flex items-start gap-2 mb-2">
+                                                    <span className={`text-xl ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                                                        {isCorrect ? '✓' : '✗'}
+                                                    </span>
+                                                    <div className="flex-1">
+                                                        <p className="font-semibold text-gray-800 mb-2">
+                                                            {index + 1}. {question.question}
+                                                        </p>
+                                                        <p className={`text-sm ${isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+                                                            {isCorrect ? 'Dogru Cevap!' : `Dogru Cevap: ${question.options[question.correct]}`}
+                                                        </p>
+                                                        {!isCorrect && (
+                                                            <p className="text-sm text-gray-600 mt-1">
+                                                                Sizin Cevabiniz: {question.options[userAnswer] || 'Bos'}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <button
+                                    onClick={handleRestart}
+                                    className={`flex-1 bg-gradient-to-r ${topic.color} text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300`}
+                                >
+                                    Tekrar Dene 🔄
+                                </button>
+                                <button
+                                    onClick={onBack}
+                                    className="flex-1 bg-gray-200 text-gray-800 font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                                >
+                                    Konuya Don ←
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            const currentQ = questions[currentQuestion];
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+
+            return (
+                <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-3xl mx-auto">
+                        <button
+                            onClick={onBack}
+                            className="mb-6 flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 group"
+                        >
+                            <svg className="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Konuya Don
+                        </button>
+
+                        <div className="bg-white rounded-xl shadow-lg p-4 mb-6">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-sm font-semibold text-gray-600">
+                                    Soru {currentQuestion + 1} / {questions.length}
+                                </span>
+                                <span className="text-sm font-semibold text-gray-600">
+                                    %{Math.round(progress)}
+                                </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-3">
+                                <div
+                                    className={`bg-gradient-to-r ${topic.color} h-3 rounded-full transition-all duration-300`}
+                                    style={{ width: `${progress}%` }}
+                                ></div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-6">
+                            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
+                                {currentQ.question}
+                            </h2>
+
+                            <div className="space-y-3">
+                                {currentQ.options.map((option, index) => {
+                                    const isSelected = selectedAnswers[currentQ.id] === index;
+                                    return (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleAnswerSelect(currentQ.id, index)}
+                                            className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 ${
+                                                isSelected
+                                                    ? `bg-gradient-to-r ${topic.color} bg-opacity-10 text-gray-900 font-semibold border-blue-500`
+                                                    : 'border-gray-200 hover:border-gray-300 bg-gray-50 hover:bg-gray-100 text-gray-700'
+                                            }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div
+                                                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                                                        isSelected
+                                                            ? 'border-blue-500 bg-blue-500'
+                                                            : 'border-gray-300'
+                                                    }`}
+                                                >
+                                                    {isSelected && (
+                                                        <div className="w-3 h-3 rounded-full bg-white"></div>
+                                                    )}
+                                                </div>
+                                                <span>{option}</span>
+                                            </div>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        <div className="flex gap-4">
+                            <button
+                                onClick={handlePrevious}
+                                disabled={currentQuestion === 0}
+                                className={`flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-200 ${
+                                    currentQuestion === 0
+                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                        : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                                }`}
+                            >
+                                ← Onceki
+                            </button>
+                            <button
+                                onClick={handleNext}
+                                className={`flex-1 bg-gradient-to-r ${topic.color} text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300`}
+                            >
+                                {currentQuestion === questions.length - 1 ? 'Sonuclari Gor →' : 'Sonraki →'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function App() {
+            const [selectedTopic, setSelectedTopic] = useState(null);
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+                    {selectedTopic ? (
+                        <TopicDetail 
+                            topic={selectedTopic} 
+                            onBack={() => setSelectedTopic(null)} 
+                        />
+                    ) : (
+                        <HomePage onSelectTopic={setSelectedTopic} />
+                    )}
+                </div>
+            );
+        }
+
+        const rootElement = document.getElementById('root');
+        if (rootElement) {
+            const root = ReactDOM.createRoot(rootElement);
+            root.render(<App />);
+        }
+    </script>
+</body>
+</html>

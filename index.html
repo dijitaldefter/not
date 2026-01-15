@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilişim Teknolojileri ve Yazılım - 5. Sınıf Öğrenci Portali</title>
+    
+    <!-- React & Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Blockly for Code Editor -->
+    <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+    
+    <!-- Custom Animations -->
+    <link rel="stylesheet" href="./animations.css">
+
+    <!-- Data Files -->
+    <script src="./meb-curriculum-data.js"></script>
+    <script src="./deep-content-bt51.js"></script>
+    <script src="./deep-content-bt52.js"></script>
+    <script src="./deep-content-bt53.js"></script>
+    <script src="./deep-content-bt54.js"></script>
+    <script src="./deep-content-bt55.js"></script>
+
+    <!-- Components -->
+    <script src="./interactive-tools.js" type="text/babel"></script>
+    <script src="./deep-module-viewer.js" type="text/babel"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Hero Section Component
+        function HeroSection({ onStart }) {
+            return (
+                <div className="relative overflow-hidden bg-white mb-12">
+                    <div className="absolute inset-0">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 opacity-90"></div>
+                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 animate-pulse-soft"></div>
+                    </div>
+                    
+                    <div className="relative max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 text-center">
+                        <h1 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-8 animate-fade-in">
+                            <span className="block">Bilişim Teknolojileri</span>
+                            <span className="block text-blue-200 mt-2">Geleceği Kodluyoruz! 🚀</span>
+                        </h1>
+                        
+                        <p className="mt-4 max-w-2xl mx-auto text-xl text-blue-100 animate-fade-in" style={{animationDelay: '0.2s'}}>
+                            5. Sınıf müfredatına uygun, interaktif ve eğlenceli öğrenme platformu.
+                            Kodla, Tasarla, Keşfet!
+                        </p>
+
+                        <div className="mt-10 flex justify-center gap-4 animate-fade-in" style={{animationDelay: '0.4s'}}>
+                            <button
+                                onClick={onStart}
+                                className="px-8 py-4 bg-white text-blue-600 font-bold rounded-full shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2"
+                            >
+                                <span className="text-2xl">🎓</span>
+                                Öğrenmeye Başla
+                            </button>
+                        </div>
+                        
+                        {/* Stats */}
+                        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3 animate-fade-in" style={{animationDelay: '0.6s'}}>
+                            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                                <div className="text-4xl">📚</div>
+                                <div className="mt-2 text-3xl font-bold text-white">5 Ünite</div>
+                                <div className="text-blue-200">Kapsamlı Müfredat</div>
+                            </div>
+                            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                                <div className="text-4xl">🎮</div>
+                                <div className="mt-2 text-3xl font-bold text-white">15+ Modül</div>
+                                <div className="text-blue-200">İnteraktif İçerik</div>
+                            </div>
+                            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                                <div className="text-4xl">🏆</div>
+                                <div className="mt-2 text-3xl font-bold text-white">Rozetler</div>
+                                <div className="text-blue-200">Başarılarını Göster</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <svg className="absolute bottom-0 w-full h-16 text-gray-50 -mb-1" preserveAspectRatio="none" viewBox="0 0 1440 54">
+                        <path fill="currentColor" d="M0 22L120 16.7C240 11 480 1 720 1C960 1 1200 11 1320 16.7L1440 22V54H1320C1200 54 960 54 720 54C480 54 240 54 120 54H0V22Z"></path>
+                    </svg>
+                </div>
+            );
+        }
+
+        // Forum Component (Existing logic preserved but updated UI)
+        function Forum({ topic, onBack }) {
+            const [messages, setMessages] = useState([]);
+            const [username, setUsername] = useState('');
+            const [newMessage, setNewMessage] = useState('');
+            
+            useEffect(() => {
+                const savedUsername = localStorage.getItem('bilisim_username');
+                if (savedUsername) setUsername(savedUsername);
+
+                const forumKey = `forum_${topic.id}`;
+                const savedMessages = localStorage.getItem(forumKey);
+                if (savedMessages) setMessages(JSON.parse(savedMessages));
+            }, [topic.id]);
+
+            const saveMessages = (updatedMessages) => {
+                localStorage.setItem(`forum_${topic.id}`, JSON.stringify(updatedMessages));
+                setMessages(updatedMessages);
+            };
+
+            const handlePost = (e) => {
+                e.preventDefault();
+                if (!newMessage.trim()) return;
+                
+                const msg = {
+                    id: Date.now(),
+                    username,
+                    message: newMessage,
+                    timestamp: new Date().toLocaleString('tr-TR'),
+                    replies: []
+                };
+                
+                saveMessages([...messages, msg]);
+                setNewMessage('');
+            };
+
+            const handleLogin = (e) => {
+                e.preventDefault();
+                const name = e.target.username.value.trim();
+                if (name) {
+                    localStorage.setItem('bilisim_username', name);
+                    setUsername(name);
+                }
+            };
+
+            if (!username) {
+                return (
+                    <div className="max-w-md mx-auto mt-20 bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
+                        <h2 className="text-2xl font-bold text-center mb-6">Forum Girişi 👤</h2>
+                        <form onSubmit={handleLogin}>
+                            <input name="username" className="w-full p-3 border-2 rounded-lg mb-4" placeholder="Adınız..." required />
+                            <button type="submit" className={`w-full bg-gradient-to-r ${topic.color} text-white font-bold py-3 rounded-lg hover:shadow-lg`}>
+                                Devam Et →
+                            </button>
+                        </form>
+                        <button onClick={onBack} className="w-full mt-4 text-gray-500 hover:text-gray-700">← İptal</button>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="max-w-4xl mx-auto py-8 px-4 animate-fade-in">
+                    <button onClick={onBack} className="mb-4 text-gray-600 hover:text-gray-900 flex items-center gap-2">
+                        ← Konuya Dön
+                    </button>
+                    
+                    <div className={`bg-gradient-to-r ${topic.color} rounded-2xl p-6 text-white shadow-lg mb-8`}>
+                        <h1 className="text-3xl font-bold flex items-center gap-3">
+                            💬 Forum: {topic.title}
+                        </h1>
+                        <p className="opacity-90 mt-2">Hoş geldin, {username}!</p>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow p-6 mb-8">
+                        <form onSubmit={handlePost}>
+                            <textarea
+                                value={newMessage}
+                                onChange={e => setNewMessage(e.target.value)}
+                                className="w-full p-4 border-2 rounded-xl mb-4 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                rows="3"
+                                placeholder="Bir şeyler yaz..."
+                                required
+                            ></textarea>
+                            <button type="submit" className={`bg-gradient-to-r ${topic.color} text-white font-bold py-2 px-6 rounded-lg float-right hover:shadow-lg`}>
+                                Gönder 📤
+                            </button>
+                        </form>
+                    </div>
+
+                    <div className="space-y-4 clear-both">
+                        {messages.length === 0 ? (
+                            <div className="text-center text-gray-500 py-12 bg-white rounded-xl">
+                                <span className="text-4xl block mb-2">💭</span>
+                                İlk mesajı sen yaz!
+                            </div>
+                        ) : (
+                            messages.map(msg => (
+                                <div key={msg.id} className="bg-white rounded-xl shadow p-6 hover:shadow-md transition-shadow">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div className="font-bold text-gray-800 flex items-center gap-2">
+                                            <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">👤</div>
+                                            {msg.username}
+                                        </div>
+                                        <span className="text-xs text-gray-500">{msg.timestamp}</span>
+                                    </div>
+                                    <p className="text-gray-700 ml-10">{msg.message}</p>
+                                </div>
+                            )).reverse()
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // HomePage Component
+        function HomePage({ onSelectTopic }) {
+            const topicList = Object.values(mebTopics);
+
+            return (
+                <div className="pb-20">
+                    <HeroSection onStart={() => document.getElementById('topics').scrollIntoView({behavior: 'smooth'})} />
+
+                    <div id="topics" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl font-bold text-gray-800 mb-4">Müfredat Konuları</h2>
+                            <p className="text-gray-600">Keşfetmek istediğin üniteyi seç!</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {topicList.map((topic, index) => (
+                                <button
+                                    key={topic.id}
+                                    onClick={() => onSelectTopic(topic)}
+                                    className="group relative bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-left overflow-hidden animate-fade-in"
+                                    style={{animationDelay: `${index * 0.1}s`}}
+                                >
+                                    <div className={`h-2 bg-gradient-to-r ${topic.color}`}></div>
+                                    <div className="p-8">
+                                        <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                                            {topic.icon}
+                                        </div>
+                                        <h3 className="text-2xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors">
+                                            {topic.title}
+                                        </h3>
+                                        <p className="text-gray-600 mb-6 line-clamp-2">
+                                            {topic.description}
+                                        </p>
+                                        <div className="flex items-center text-blue-500 font-semibold group-hover:translate-x-2 transition-transform">
+                                            İncele <span className="ml-2">→</span>
+                                        </div>
+                                    </div>
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${topic.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // TopicDetail Component
+        function TopicDetail({ topic, onBack }) {
+            const [view, setView] = useState('summary'); // summary, deep-content, forum
+
+            // Deep Module Viewer Component'ini Render Et
+            if (view === 'deep-content') {
+                const DeepViewer = DeepModuleViewer;
+                return <DeepViewer topic={topic} onBack={() => setView('summary')} />;
+            }
+
+            if (view === 'forum') {
+                return <Forum topic={topic} onBack={() => setView('summary')} />;
+            }
+
+            return (
+                <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 animate-fade-in">
+                    <div className="max-w-5xl mx-auto">
+                        <button
+                            onClick={onBack}
+                            className="mb-8 flex items-center text-gray-600 hover:text-gray-900 transition-all group px-4 py-2 rounded-lg hover:bg-white"
+                        >
+                            <span className="text-xl mr-2 transform group-hover:-translate-x-1 transition-transform">←</span>
+                            Ana Sayfaya Dön
+                        </button>
+
+                        <div className={`bg-gradient-to-br ${topic.color} rounded-3xl p-10 mb-8 text-white shadow-2xl relative overflow-hidden`}>
+                            <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4">
+                                <div className="text-[15rem]">{topic.icon}</div>
+                            </div>
+                            
+                            <div className="relative z-10">
+                                <div className="flex items-center gap-6 mb-6">
+                                    <span className="text-7xl animate-float">{topic.icon}</span>
+                                    <div>
+                                        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">
+                                            {topic.title}
+                                        </h1>
+                                        <p className="text-lg opacity-90 font-medium">
+                                            {topic.description}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Summary Section */}
+                        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 border-l-8 border-blue-500">
+                            <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+                                <span className="text-3xl">📝</span>
+                                Genel Bakış
+                            </h2>
+                            <div className="prose max-w-none text-gray-700 leading-relaxed whitespace-pre-line">
+                                {topic.summary.split('**').map((part, index) => 
+                                    index % 2 === 1 ? <strong key={index} className="text-blue-700">{part}</strong> : part
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Action Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* Deep Content Card */}
+                            <div 
+                                onClick={() => setView('deep-content')}
+                                className="bg-white rounded-2xl shadow-xl p-8 cursor-pointer hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 border-2 border-transparent hover:border-blue-100 group"
+                            >
+                                <div className="flex items-center justify-between mb-6">
+                                    <span className="text-5xl bg-blue-50 p-4 rounded-2xl group-hover:bg-blue-100 transition-colors">🚀</span>
+                                    <span className="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                                        Önerilen
+                                    </span>
+                                </div>
+                                <h3 className="text-2xl font-bold text-gray-800 mb-3">Modülleri Keşfet</h3>
+                                <p className="text-gray-600 mb-6">
+                                    Bu üniteye ait interaktif dersleri, simülasyonları ve testleri incele.
+                                </p>
+                                <div className={`text-transparent bg-clip-text bg-gradient-to-r ${topic.color} font-bold flex items-center`}>
+                                    Başla <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                                </div>
+                            </div>
+
+                            {/* Forum Card */}
+                            <div 
+                                onClick={() => setView('forum')}
+                                className="bg-white rounded-2xl shadow-xl p-8 cursor-pointer hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 border-2 border-transparent hover:border-purple-100 group"
+                            >
+                                <div className="flex items-center justify-between mb-6">
+                                    <span className="text-5xl bg-purple-50 p-4 rounded-2xl group-hover:bg-purple-100 transition-colors">💬</span>
+                                </div>
+                                <h3 className="text-2xl font-bold text-gray-800 mb-3">Tartışma Forumu</h3>
+                                <p className="text-gray-600 mb-6">
+                                    Arkadaşlarınla bu konu hakkında konuş, sorular sor ve yardımlaş.
+                                </p>
+                                <div className="text-purple-600 font-bold flex items-center">
+                                    Sohbete Katıl <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // App Component
+        function App() {
+            const [selectedTopic, setSelectedTopic] = useState(null);
+
+            return (
+                <div className="min-h-screen bg-gray-50 font-sans">
+                    {selectedTopic ? (
+                        <TopicDetail 
+                            topic={selectedTopic} 
+                            onBack={() => setSelectedTopic(null)} 
+                        />
+                    ) : (
+                        <HomePage onSelectTopic={setSelectedTopic} />
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
